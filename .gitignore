@@ -1,0 +1,4 @@
+.aw-cache
+node_modules
+public
+dist
