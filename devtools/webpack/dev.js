@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const alias = require('./alias');
 /**
  * Env. vars
  */
@@ -7,10 +8,6 @@ const port = process.env.PORT || 3000;
 const hostname = process.env.HOSTNAME || 'localhost';
 const host = 'http://' + hostname + ':' + port;
 const assetHost = process.env.ASSET_HOST || host + '/';
-const projectPaths = {
-  source: 'client/src',
-  dist: 'public'
-};
 
 module.exports = (config) => {
   return {
@@ -34,8 +31,8 @@ module.exports = (config) => {
       port: port,
       publicPath: assetHost, // Make sure publicPath always starts and ends with a forward slash.
       contentBase: [
-        path.join(process.cwd(), projectPaths.source),
-        path.join(process.cwd(), projectPaths.dist)
+        path.join(process.cwd(), alias.path.client),
+        path.join(process.cwd(), alias.path.dist)
       ],
       clientLogLevel: 'none',
       noInfo: true,
@@ -46,19 +43,6 @@ module.exports = (config) => {
     },
     module: {
       rules: [
-        {
-          test: /\.ts$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: 'awesome-typescript-loader',
-              options: {
-                useTranspileModule: true,
-                useCache: true
-              }
-            }
-          ]
-        },
         {
           test: /\.scss$/,
           use: [

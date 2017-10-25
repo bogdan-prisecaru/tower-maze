@@ -1,22 +1,28 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noEmit": true,
-    "noEmitHelpers": true,
-    "importHelpers": true,
     "strictNullChecks": false,
+    "importHelpers": true,
     "baseUrl": ".",
     "paths": {
       "@bootstrap/*": ["client/src/bootstrap/*"],
+      "@model/*": ["client/src/model/*"],
       "@module/*": ["client/src/module/*"],
       "@webc/*": ["client/src/webc/*"]
-    }
+    },
+    "lib": [
+      "ES6",
+      "DOM",
+      "DOM.Iterable",
+      "ScriptHost"
+    ],
+    "types": [],
   },
 
   "exclude": [ "node_modules" ],

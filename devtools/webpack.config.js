@@ -24,8 +24,11 @@ module.exports = function(config) {
 
   return merge({
     entry: {
+      // polyfill: [
+      //   path.resolve(`${alias.path.client}/polyfill.ts`),
+      // ],
       app: [
-        path.resolve('src/main.ts')
+        path.resolve(`${alias.path.client}/main.ts`)
       ]
     },
     output: {
@@ -35,21 +38,15 @@ module.exports = function(config) {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.resolve('client/index.ejs'),
+        template: path.resolve(`${alias.path.client}/index.ejs`),
+        title: METADATA.title,
         chunksSortMode: function(a, b) {
-          const entryPoints = ['vendor', 'main'];
+          const entryPoints = ['polyfill', 'vendor', 'app'];
           return entryPoints.indexOf(a.names[0]) - entryPoints.indexOf(b.names[0]);
         },
         metadata: METADATA,
-        inject: 'body' // we need set to body for ng4 - otherwise it breaks
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        minChunks: function(module) { // this assumes your vendor imports exist in the node_modules directory
-          return module.context && module.context.indexOf('node_modules') !== -1;
-        }
-      }),
-      new webpack.optimize.OccurrenceOrderPlugin()
+        inject: 'head' // we need set to body for ng4 - otherwise it breaks
+      })
     ],
     resolveLoader: {
       modules: ['node_modules']
@@ -59,11 +56,13 @@ module.exports = function(config) {
         'devtools',
         'client/src',
         'server',
+        'e2e',
         'node_modules'
       ],
-      extensions: ['.ts', '.js', '.scss', '.css', '.html'],
+      extensions: ['.ts', '.js', '.json', '.scss', '.css', '.html', '.png', '.jpeg'],
       alias: Object.assign({},
         alias.bootstrap,
+        alias.model,
         alias.module,
         alias.webc,
         alias.ui,
@@ -77,6 +76,19 @@ module.exports = function(config) {
     },
     module: {
       rules: [
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'awesome-typescript-loader',
+              options: {
+                useTranspileModule: true,
+                useCache: true
+              }
+            }
+          ]
+        },
         {
           test: /\.html$/,
           exclude: /node_modules/,

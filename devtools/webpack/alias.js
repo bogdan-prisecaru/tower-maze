@@ -1,34 +1,43 @@
 const path = require('path');
 
-const aliasConfig = {
-  clientPath: path.join(process.cwd(), 'client/src/'),
-  serverPath: path.join(process.cwd(), 'server/'),
-}
+class Alias {
+  static get path() {
+    return {
+      client: path.join(process.cwd(), 'client/src/'),
+      server:  path.join(process.cwd(), 'server/'),
+      dist: path.join(process.cwd(), 'public/'),
+    };
+  }
 
-class AliasProvider {
   static get bootstrap() {
     return { // mare sure to sync this with tsconfig.json paths
-      '@bootstrap': path.join(aliasConfig.clientPath, 'bootstrap'),
+      '@bootstrap': path.join(Alias.path.client, 'bootstrap'),
+    }
+  }
+
+  static get model() {
+    return { // mare sure to sync this with tsconfig.json paths
+      '@model': path.join(Alias.path.client, 'model'),
     }
   }
 
   static get module() {
     return { // mare sure to sync this with tsconfig.json paths
-      '@module': path.join(aliasConfig.clientPath, 'module'),
+      '@module': path.join(Alias.path.client, 'module'),
     }
   }
 
   static get webc() {
     return { // mare sure to sync this with tsconfig.json paths
-      '@webc': path.join(aliasConfig.clientPath, 'webc'),
+      '@webc': path.join(Alias.path.client, 'webc'),
     }
   }
 
   static get ui() {
     return {
-      '@ui': path.join(aliasConfig.clientPath, 'ui'),
+      '@ui': path.join(Alias.path.client, 'ui'),
     }
   }
 }
 
-module.exports = AliasProvider;
+module.exports = Alias;
